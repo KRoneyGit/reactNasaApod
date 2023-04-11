@@ -3,23 +3,33 @@ import './App.css';
 import {getPictureOfTheDay} from './api';
 
 
-function App() {  
-  React.useEffect(() => {
-    console.log('use effect')
-    
+function App() {
+  const [apodDetails, setApodDetails] = React.useState(null)
+
+  React.useEffect(() => {    
     const getPicture = async () => {
       const response = await getPictureOfTheDay()
-      console.log('response in useEffect', response)
+      setApodDetails(response)
     }
 
     getPicture()
   }, [])
 
+  console.log('apod details', apodDetails)
 
   return (
     <div className="App">
       <h1>NASA Astronomy Picture of the Day</h1>
-      <img src={''}></img>
+
+      {
+        apodDetails ?
+          <>
+            <img src={apodDetails.url}></img>
+            <div>{apodDetails.copyright}</div>
+          </>
+          : <p>Loading...</p>
+      }
+
     </div>
   );
 }
